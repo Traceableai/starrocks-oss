@@ -31,6 +31,17 @@ import com.starrocks.sql.ast.SelectList;
 import com.starrocks.sql.ast.SelectListItem;
 import com.starrocks.sql.ast.SelectRelation;
 import com.starrocks.sql.ast.TableRelation;
+<<<<<<< HEAD
+=======
+import com.starrocks.sql.ast.expression.Expr;
+import com.starrocks.sql.ast.expression.FunctionCallExpr;
+import com.starrocks.sql.ast.expression.InPredicate;
+import com.starrocks.sql.ast.expression.LargeInPredicate;
+import com.starrocks.sql.ast.expression.LiteralExpr;
+import com.starrocks.sql.ast.expression.SlotRef;
+import com.starrocks.sql.formatter.AST2SQLVisitor;
+import com.starrocks.sql.formatter.FormatOptions;
+>>>>>>> 46b658ae6d ([Enhancement] optimize large in predicate (#64194))
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
@@ -180,6 +191,11 @@ public class SPMAst2SQLBuilder {
                 return strBuilder.toString();
             }
             return super.visitInPredicate(node, context);
+        }
+
+        @Override
+        public String visitLargeInPredicate(LargeInPredicate node, Void context) {
+            return super.visitLargeInPredicate(node, context);
         }
 
         @Override
