@@ -70,7 +70,7 @@ public class AnalyzeTranslateTest {
     public void testTranslateTrinoSQL() {
         assertTranslateTrinoSQL("translate trino select to_unixtime(TIMESTAMP '2023-04-22 00:00:00')",
                 "SELECT unix_timestamp('2023-04-22 00:00:00')");
-        assertTranslateTrinoSQL("translate trino select day_of_week(timestamp '2022-03-06 01:02:03')",
+            assertTranslateTrinoSQL("translate trino select day_of_week(timestamp '2022-03-06 01:02:03')",
                 "SELECT dayofweek_iso('2022-03-06 01:02:03')");
         assertTranslateTrinoSQL("translate trino SELECT date_parse('20141221','%Y%m%d')",
                 "SELECT str_to_date('20141221', '%Y%m%d')");
@@ -93,6 +93,14 @@ public class AnalyzeTranslateTest {
         assertTranslateTrinoSQL("translate trino select approx_set(\"tc\") from tall",
                 "SELECT hll_hash(`tc`)\nFROM `tall`");
 
+        assertTranslateTrinoSQL("translate trino select array[2,3]",
+                "SELECT ARRAY<TINYINT>[2, 3]");
+
+        assertTranslateTrinoSQL("translate trino select cardinality(array[1,2,3])",
+                "SELECT cardinality(ARRAY<TINYINT>[1, 2, 3])");
+
+        assertTranslateTrinoSQL("translate trino select cardinality(array_intersect(array[1,2,3], array[3,4,5]))",
+                "SELECT cardinality(array_intersect(ARRAY<TINYINT>[1, 2, 3], ARRAY<TINYINT>[3, 4, 5]))");
         // test TPCH query
         assertTranslateTrinoSQL("translate trino select\n" +
                 "  o_orderpriority,\n" +
