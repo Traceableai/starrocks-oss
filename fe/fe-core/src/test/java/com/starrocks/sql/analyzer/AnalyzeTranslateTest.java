@@ -93,7 +93,7 @@ public class AnalyzeTranslateTest {
         assertTranslateTrinoSQL("translate trino select approx_set(\"tc\") from tall",
                 "SELECT hll_hash(`tc`)\nFROM `tall`");
 
-                assertTranslateTrinoSQL("translate trino select array[2,3]",
+        assertTranslateTrinoSQL("translate trino select array[2,3]",
                 "SELECT ARRAY<TINYINT>[2, 3]");
 
         assertTranslateTrinoSQL("translate trino select cardinality(array[1,2,3])",
