@@ -718,7 +718,29 @@ public class AstBuilder extends AstVisitor<ParseNode, ParseTreeContext> {
         } else {
             exprs = Collections.emptyList();
         }
-        return new ArrayExpr(null, exprs);
+
+        // Simple array type inference - assume uniform type based on first non-null element
+        Type arrayType = null;
+        if (!exprs.isEmpty()) {
+            try {
+                // Find first non-null element for type inference
+                Expr firstNonNullExpr = null;
+                for (Expr expr : exprs) {
+                    if (!(expr instanceof NullLiteral)) {
+                        firstNonNullExpr = expr;
+                        break;
+                    }
+                }
+
+                if (firstNonNullExpr != null && firstNonNullExpr.getType() != null) {
+                    arrayType = new ArrayType(firstNonNullExpr.getType());
+                }
+            } catch (Exception e) {
+                // If type inference fails, continue with null type (fallback behavior)
+            }
+        }
+
+        return new ArrayExpr(arrayType, exprs);
     }
 
     @Override
